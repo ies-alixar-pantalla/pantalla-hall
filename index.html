@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>IES Alixar · Pantalla del hall</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson&#43;Hyperlegible:wght@400;700&amp;display=swap">
+<style>
+  html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; background: #0f2a3d; color: #fff; }
+  body { font-family: 'Atkinson Hyperlegible', 'Segoe UI', Roboto, Arial, sans-serif; }
+  #raiz { position: absolute; left: 0; top: 0; width: 100%; height: 100%; display: flex; flex-direction: column; transition: transform 2s; }
+  .cab { display: flex; align-items: center; justify-content: space-between; padding: 1.6vw 3.4vw 1.3vw; background: #0b2131; }
+  .cab-izq { display: flex; align-items: center; }
+  .logo { width: 4.8vw; height: 4.8vw; border-radius: 1vw; background: #fff; color: #0f2a3d; font-weight: 700; font-size: 1.7vw; display: flex; align-items: center; justify-content: center; margin-right: 1.5vw; }
+  .cab-titulo { font-size: 3vw; font-weight: 700; line-height: 1.05; }
+  .cab-sub { font-size: 1.55vw; color: #b8cad6; margin-top: .2vw; }
+  .reloj { font-size: 5vw; font-weight: 700; line-height: 1; text-align: right; }
+  .reloj-sub { font-size: 1.35vw; color: #b8cad6; text-align: right; }
+  .cuerpo { flex: 1; padding: 2vw 3.4vw 1.6vw; display: flex; min-height: 0; }
+  .col { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+  .col + .col { margin-left: 2.5vw; }
+  .col-tit { font-size: 1.9vw; font-weight: 700; margin-bottom: 1.2vw; }
+  .col-tit.fuera { color: #ffb199; }
+  .col-tit.centro { color: #8fe3d6; }
+  .tarjeta { background: #163a52; border-radius: 1.1vw; padding: 1.4vw 1.7vw; margin-bottom: 1.25vw; border-top: .42vw solid #ff7a59; }
+  .tarjeta.centro { border-top-color: #2bb3a3; }
+  .tar-nom { font-size: 2.1vw; font-weight: 700; line-height: 1.15; }
+  .tar-meta { font-size: 1.45vw; color: #d3e0e8; margin-top: .4vw; }
+  .bloque { margin-top: .7vw; display: flex; flex-wrap: wrap; align-items: center; }
+  .bloque-h { font-size: 1.45vw; color: #8fe3d6; margin-right: .9vw; }
+  .tarjeta.fuera .bloque-h { color: #ffcfbf; }
+  .grupo { font-size: 1.55vw; font-weight: 700; background: #fff; color: #0f2a3d; padding: .3vw 1vw; border-radius: .6vw; margin: .25vw .6vw .25vw 0; white-space: nowrap; }
+  .acomp { font-size: 1.35vw; color: #b8cad6; margin-top: .6vw; }
+  .pagina { font-size: 1.3vw; color: #b8cad6; margin-left: 1vw; font-weight: 400; }
+  .msg { flex: 1; display: flex; flex-direction: column; justify-content: center; border-radius: 1.6vw; padding: 3vw 4.5vw; }
+  .msg-tit { font-size: 4.4vw; font-weight: 700; line-height: 1.08; }
+  .msg-txt { font-size: 2.5vw; line-height: 1.35; margin-top: 1.6vw; white-space: pre-line; }
+  .msg-firma { font-size: 1.7vw; margin-top: 2.2vw; opacity: .85; }
+  .msg-html { font-size: 2.5vw; line-height: 1.35; margin-top: 1.4vw; overflow: hidden; }
+  .msg-html h2 { font-size: 3.6vw; margin: .6vw 0; line-height: 1.1; }
+  .msg-html h3 { font-size: 3vw; margin: .5vw 0; line-height: 1.15; }
+  .msg-html p, .msg-html div { margin: 0 0 .8vw; }
+  .msg-html ul, .msg-html ol { margin: .4vw 0 .8vw 3vw; padding: 0; }
+  .msg-html img { max-width: 100%; max-height: 52vh; border-radius: .8vw; vertical-align: middle; }
+  .web { flex: 1; position: relative; border-radius: 1.2vw; overflow: hidden; background: #000; }
+  .web iframe { position: absolute; left: 0; top: 0; width: 100%; height: 100%; border: 0; }
+  .c-azul { background: #1c4e80; } .c-verde { background: #1d6b4f; } .c-morado { background: #4b3a8c; }
+  .c-ambar { background: #ffd166; color: #3a2a00; } .c-rojo { background: #b3261e; }
+  .portada { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+  .portada-reloj { font-size: 12vw; font-weight: 700; line-height: 1; }
+  .portada-fecha { font-size: 3vw; color: #d3e0e8; margin-top: 1vw; }
+  .portada-centro { font-size: 2.2vw; color: #8fb3c8; margin-top: 2.5vw; }
+  .pie { display: flex; align-items: center; justify-content: space-between; padding: 1.1vw 3.4vw; background: #ffd166; color: #3a2a00; min-height: 2.4vw; }
+  .pie.vacio { background: #0b2131; color: #b8cad6; }
+  .pie-msg { font-size: 1.7vw; font-weight: 700; }
+  .pie-der { font-size: 1.2vw; white-space: nowrap; margin-left: 2vw; }
+  .puntos span { display: inline-block; width: .7vw; height: .7vw; border-radius: 50%; background: currentColor; opacity: .3; margin-left: .45vw; }
+  .puntos span.on { opacity: 1; }
+  #reposo { position: absolute; left: 0; top: 0; width: 100%; height: 100%; background: #000; color: #555; display: none; }
+  #reposoReloj { position: absolute; font-size: 3vw; }
+  .aviso-previa { position: absolute; right: 1vw; bottom: 5vw; background: #ff7a59; color: #fff; font-size: 1.1vw; padding: .3vw .8vw; border-radius: .4vw; }
+</style>
+</head>
+<body>
+<div id="raiz">
+  <div class="cab">
+    <div class="cab-izq">
+      <div class="logo">IES</div>
+      <div>
+        <div class="cab-titulo" id="cabTitulo">IES Alixar</div>
+        <div class="cab-sub" id="cabFecha"></div>
+      </div>
+    </div>
+    <div>
+      <div class="reloj" id="reloj">--:--</div>
+      <div class="reloj-sub" id="relojSub"></div>
+    </div>
+  </div>
+  <div class="cuerpo" id="cuerpo"></div>
+  <div class="pie vacio" id="pie">
+    <div class="pie-msg" id="pieMsg"></div>
+    <div class="pie-der"><span id="pieAct"></span><span class="puntos" id="puntos"></span></div>
+  </div>
+</div>
+<div id="reposo"><div id="reposoReloj">--:--</div></div>
+
+<script>
+(function() {
+  var DIAS = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
+  var MESES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+  var datos = window.PH_DATOS || null;
+  var previa = Boolean(window.PH_DATOS);
+  var indice = 0;
+  var temporizador = null;
+  var desplazamiento = 0;
+
+  function $(id) { return document.getElementById(id); }
+
+  function dos(n) { return (n < 10 ? '0' : '') + n; }
+
+  function claveHoy() {
+    var d = new Date();
+    return d.getFullYear() + '-' + dos(d.getMonth() + 1) + '-' + dos(d.getDate());
+  }
+
+  function minutosAhora() {
+    var d = new Date();
+    return d.getHours() * 60 + d.getMinutes();
+  }
+
+  function minutos(hhmm) {
+    var m = /^(\d{1,2}):(\d{2})$/.exec(String(hhmm || ''));
+    return m ? Number(m[1]) * 60 + Number(m[2]) : null;
+  }
+
+  function el(etiqueta, clase, texto) {
+    var e = document.createElement(etiqueta);
+    if (clase) { e.className = clase; }
+    if (texto !== undefined && texto !== null && texto !== '') { e.textContent = String(texto); }
+    return e;
+  }
+
+  function vaciar(e) {
+    while (e.firstChild) { e.removeChild(e.firstChild); }
+  }
+
+  function textoFecha() {
+    var d = new Date();
+    return DIAS[d.getDay()].charAt(0).toUpperCase() + DIAS[d.getDay()].slice(1) + ', ' + d.getDate() + ' de ' + MESES[d.getMonth()];
+  }
+
+  function horaTexto() {
+    var d = new Date();
+    return d.getHours() + ':' + dos(d.getMinutes());
+  }
+
+  function pintarReloj() {
+    $('reloj').textContent = horaTexto();
+    $('cabFecha').textContent = ($('cabTitulo').textContent === 'IES Alixar' ? '' : 'IES Alixar · ') + textoFecha();
+    $('reposoReloj').textContent = horaTexto();
+  }
+
+  
+
+  function cargar() {
+    if (previa) { return; }
+    try {
+      var x = new XMLHttpRequest();
+      x.open('GET', 'hoy.json?t=' + new Date().getTime(), true);
+      x.onreadystatechange = function() {
+        if (x.readyState === 4 && x.status === 200) {
+          try { datos = JSON.parse(x.responseText); } catch (e) {   }
+        }
+      };
+      x.send();
+    } catch (e) {   }
+  }
+
+  function datosDeHoy() {
+    return datos && (previa || datos.fecha === claveHoy()) ? datos : null;
+  }
+
+  function encendida(d) {
+    var ahora = minutosAhora();
+    var desde = d && d.encendido ? minutos(d.encendido.desde) : null;
+    var hasta = d && d.encendido ? minutos(d.encendido.hasta) : null;
+    if (desde === null || hasta === null) { return true; }
+    return ahora >= desde && ahora < hasta;
+  }
+
+  
+  function paginasDace(p) {
+    var fuera = p.fuera || [];
+    var centro = p.centro || [];
+    var ambas = fuera.length && centro.length;
+    var tope = ambas ? 3 : 4;
+    var n = Math.max(Math.ceil(fuera.length / tope), Math.ceil(centro.length / tope), 1);
+    var res = [];
+    for (var i = 0; i < n; i++) {
+      res.push({ fuera: fuera.slice(i * tope, (i + 1) * tope), centro: centro.slice(i * tope, (i + 1) * tope), n: i + 1, total: n });
+    }
+    return res;
+  }
+
+  function diapositivas(d) {
+    var ahora = minutosAhora();
+    var lista = [];
+    (d.pantallas || []).forEach(function(p) {
+      var desde = minutos(p.desde);
+      var hasta = minutos(p.hasta);
+      if ((desde !== null && ahora < desde) || (hasta !== null && ahora >= hasta)) { return; }
+      if (p.tipo === 'dace') {
+        paginasDace(p).forEach(function(pg) { lista.push({ p: p, pagina: pg }); });
+      } else {
+        lista.push({ p: p });
+      }
+    });
+    return lista;
+  }
+
+  
+
+  function pintarPie(d, n, total) {
+    var msg = d && d.mensajeFijo ? d.mensajeFijo : '';
+    $('pieMsg').textContent = msg;
+    $('pie').className = msg ? 'pie' : 'pie vacio';
+    $('pieAct').textContent = d && d.generado ? 'Actualizado a las ' + String(d.generado).slice(11, 16).replace(/^0/, '') : '';
+    var puntos = $('puntos');
+    vaciar(puntos);
+    if (total > 1) {
+      for (var i = 0; i < total; i++) {
+        puntos.appendChild(el('span', i === n ? 'on' : ''));
+      }
+    }
+  }
+
+  function tarjeta(a, donde) {
+    var t = el('div', 'tarjeta ' + donde);
+    t.appendChild(el('div', 'tar-nom', a.nombre));
+    var meta = [];
+    if (a.lugar) { meta.push(a.lugar); }
+    if (a.dpto) { meta.push(a.dpto); }
+    if (meta.length) { t.appendChild(el('div', 'tar-meta', meta.join(' · '))); }
+    (a.bloques || []).forEach(function(b) {
+      var fila = el('div', 'bloque');
+      if (b.horas) { fila.appendChild(el('span', 'bloque-h', b.horas)); }
+      (b.grupos || []).forEach(function(g) { fila.appendChild(el('span', 'grupo', g)); });
+      t.appendChild(fila);
+    });
+    if (a.acompanantes && a.acompanantes.length) {
+      t.appendChild(el('div', 'acomp', (a.acompanantes.length > 1 ? 'Acompañan: ' : 'Acompaña: ') + a.acompanantes.join(', ')));
+    }
+    return t;
+  }
+
+  function columna(titulo, clase, lista) {
+    var c = el('div', 'col');
+    c.appendChild(el('div', 'col-tit ' + clase, titulo));
+    lista.forEach(function(a) { c.appendChild(tarjeta(a, clase)); });
+    return c;
+  }
+
+  function pintarDace(diapo) {
+    var cuerpo = $('cuerpo');
+    var pg = diapo.pagina;
+    $('cabTitulo').textContent = diapo.p.titulo || 'Actividades de hoy';
+    if (pg.total > 1) {
+      $('cabTitulo').appendChild(el('span', 'pagina', '(' + pg.n + ' de ' + pg.total + ')'));
+    }
+    if (pg.fuera.length) { cuerpo.appendChild(columna('🚌 Fuera del centro', 'fuera', pg.fuera)); }
+    if (pg.centro.length) { cuerpo.appendChild(columna('🏫 En el centro', 'centro', pg.centro)); }
+  }
+
+  function pintarMensaje(diapo) {
+    var p = diapo.p;
+    $('cabTitulo').textContent = 'IES Alixar';
+    var caja = el('div', 'msg c-' + (/^(azul|verde|ambar|rojo|morado)$/.test(p.color) ? p.color : 'azul'));
+    if (p.titulo) { caja.appendChild(el('div', 'msg-tit', p.titulo)); }
+    if (p.html) {
+      
+      var rico = el('div', 'msg-html');
+      rico.innerHTML = p.html;
+      caja.appendChild(rico);
+    } else if (p.texto) {
+      caja.appendChild(el('div', 'msg-txt', p.texto));
+    }
+    if (p.firma) { caja.appendChild(el('div', 'msg-firma', p.firma)); }
+    $('cuerpo').appendChild(caja);
+  }
+
+  
+  function pintarWeb(diapo) {
+    var p = diapo.p;
+    $('cabTitulo').textContent = p.titulo || 'IES Alixar';
+    var caja = el('div', 'web');
+    if (/^https:\/\//.test(String(p.embed || ''))) {
+      var marco = document.createElement('iframe');
+      marco.setAttribute('allow', 'autoplay; encrypted-media; fullscreen; picture-in-picture');
+      marco.setAttribute('allowfullscreen', 'true');
+      marco.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+      marco.setAttribute('title', p.titulo || 'Vídeo');
+      marco.src = p.embed;
+      caja.appendChild(marco);
+    }
+    $('cuerpo').appendChild(caja);
+  }
+
+  function pintarPortada(d) {
+    $('cabTitulo').textContent = 'IES Alixar';
+    var c = el('div', 'portada');
+    c.appendChild(el('div', 'portada-reloj', horaTexto()));
+    c.appendChild(el('div', 'portada-fecha', textoFecha()));
+    c.appendChild(el('div', 'portada-centro', 'Bienvenidos al IES Alixar'));
+    $('cuerpo').appendChild(c);
+    pintarReloj();
+    pintarPie(d, 0, 0);
+  }
+
+  function reposo(activo) {
+    $('reposo').style.display = activo ? 'block' : 'none';
+    $('raiz').style.display = activo ? 'none' : 'flex';
+    if (activo) {
+      var r = $('reposoReloj');
+      r.style.left = (5 + Math.floor(Math.random() * 80)) + 'vw';
+      r.style.top = (5 + Math.floor(Math.random() * 80)) + 'vh';
+    }
+  }
+
+  var ultimaClave = '';
+
+  function siguiente() {
+    clearTimeout(temporizador);
+    pintarReloj();
+    var d = datosDeHoy();
+
+    if (d && (!d.activa || (!previa && !encendida(d)))) {
+      vaciar($('cuerpo'));
+      ultimaClave = '';
+      reposo(true);
+      temporizador = setTimeout(siguiente, 30000);
+      return;
+    }
+    reposo(false);
+
+    var lista = d ? diapositivas(d) : [];
+    if (!lista.length) {
+      vaciar($('cuerpo'));
+      ultimaClave = '';
+      pintarPortada(d || datos);
+      temporizador = setTimeout(siguiente, 20000);
+      return;
+    }
+    if (indice >= lista.length) { indice = 0; }
+    var diapo = lista[indice];
+    var clave = JSON.stringify(diapo.p) + '|' + (diapo.pagina ? diapo.pagina.n : 0);
+    
+    if (!(lista.length === 1 && clave === ultimaClave)) {
+      vaciar($('cuerpo'));
+      if (diapo.p.tipo === 'dace') { pintarDace(diapo); } else if (diapo.p.tipo === 'web') { pintarWeb(diapo); } else { pintarMensaje(diapo); }
+    }
+    ultimaClave = clave;
+    pintarReloj();
+    pintarPie(d, indice, lista.length);
+    indice = indice + 1;
+    temporizador = setTimeout(siguiente, Math.max(5, Number(diapo.p.segundos) || 20) * 1000);
+  }
+
+  
+  function mover() {
+    desplazamiento = (desplazamiento + 1) % 4;
+    var x = [0, 0.3, 0, -0.3][desplazamiento];
+    var y = [0, 0.2, 0.4, 0.2][desplazamiento];
+    $('raiz').style.transform = 'translate(' + x + 'vw,' + y + 'vh)';
+  }
+
+  pintarReloj();
+  if (previa) {
+    document.body.appendChild(el('div', 'aviso-previa', 'Vista previa'));
+    siguiente();
+  } else {
+    cargar();
+    setTimeout(siguiente, 1500);
+    setInterval(cargar, 120000);
+    
+    setTimeout(function() { window.location.reload(); }, 6 * 3600000);
+  }
+  setInterval(pintarReloj, 15000);
+  setInterval(mover, 240000);
+})();
+</script>
+</body>
+</html>
